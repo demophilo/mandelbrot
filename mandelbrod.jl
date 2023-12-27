@@ -2,6 +2,13 @@ using Images
 
 function mandelbrot_subset(xmin, xmax, ymin, ymax, width, height, max_iter)
     img = zeros(RGB, height, width)
+
+    if abs(ymin) > abs(ymax)
+        ymax = 0.0
+    else
+        ymin = 0.0
+    end
+
     for (i, y) in enumerate(range(ymin, ymax, length=height))
         for (j, x) in enumerate(range(xmin, xmax, length=width))
             c = x + y * im
@@ -15,21 +22,28 @@ function mandelbrot_subset(xmin, xmax, ymin, ymax, width, height, max_iter)
             img[i, j] = RGB(iter % 10 / 10, iter % 20 / 20, iter % 30 / 30)
         end
     end
+
+    if abs(ymin) > abs(ymax)
+        img = vcat(reverse(img, dims=1), img)
+    else
+        img = vcat(img, reverse(img, dims=1))
+    end
+    
     return img
 end
 
-# Bereich für den Teilbereich der Mandelbrot-Menge
+width = 9600
+height = 9600
+max_iterations = 1000000
 x_mitte = 0.0
 y_mitte = 0.0
 zoom = 0.5
 xmin = x_mitte - 1 / zoom
 xmax =  x_mitte + 1 / zoom
-ymin = y_mitte - 1 / zoom
-ymax = y_mitte + 1 / zoom 
+ymin = y_mitte - height / zoom / width
+ymax = y_mitte + height / zoom  / width
 
-width = 3200
-height = width  # Bildgröße
-max_iterations = 360  # Maximale Anzahl an Iterationen
+
 
 subset_image = mandelbrot_subset(xmin, xmax, ymin, ymax, width, height, max_iterations)
 
