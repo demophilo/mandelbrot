@@ -1,0 +1,4 @@
+name = "Mandelbrot"
+uuid = "7f00fb0f-e19b-45db-b3ce-1fb47755160c"
+authors = ["Karl Linek <karl@linek.at>"]
+version = "0.1.0"
