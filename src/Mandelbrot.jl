@@ -3,6 +3,7 @@ module Mandelbrot
 
 
 using Images
+using FileIO
 
 function mandelbrot_subset(xmin, xmax, ymin, ymax, width, height, max_iter)
     img = zeros(RGB, height, width)
@@ -36,12 +37,12 @@ function mandelbrot_subset(xmin, xmax, ymin, ymax, width, height, max_iter)
     return img
 end
 
-width = 20000
-height = 20000
-max_iterations = 2000000
-x_mitte = 0.250200002343
-y_mitte = 0.0000049998
-zoom =10000000000
+width = 1000
+height = 1000
+max_iterations = 200
+x_mitte = 0
+y_mitte = 0
+zoom = 0.5
 xmin = x_mitte - 1 / zoom
 xmax =  x_mitte + 1 / zoom
 ymin = y_mitte - height / zoom / width
@@ -52,7 +53,27 @@ ymax = y_mitte + height / zoom  / width
 subset_image = mandelbrot_subset(xmin, xmax, ymin, ymax, width, height, max_iterations)
 
 
-save("mandelbrot_6.png", subset_image)
+# Pfad des Programmordners
+directory_of_programm = @__DIR__
+
+# Pfad des Schwesterordners
+pictures = joinpath(directory_of_programm, "..", "pictures")
+
+# Erstellen des Schwesterordners, falls er nicht existiert
+if !isdir(pictures)
+    mkpath(pictures)
+end
+
+
+# Pfad zum Speichern des Bildes im Schwesterordner
+bildpfad = joinpath(pictures, "bild.png")
+
+
+
+println("Bild gespeichert in: $bildpfad")
+
+
+save(bildpfad, subset_image)
 
 
 end # module Mandelbrot
